@@ -1,14 +1,86 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import ReactPaginate from 'react-paginate';
 import { getUserAPI } from '../features/userSlice'
 import UserCards from '../components/UserCards'
 import { Button, Col, Input, Row } from 'reactstrap'
 import REFRESH from '../assets/img/refresh.png'
 
+function Items ({ currentItems }) {
+    if(currentItems === null) return;
+
+    let display
+    switch (currentItems.length) {
+        case 0:
+            return display = <div className='container text-center'>No such item, please check your search spelling and try again</div>        
+        default:
+            return display = currentItems.map((data,index) => (
+                <UserCards key={index} data={data} />
+            ))
+    }
+}
+
+function Pagination ({itemsPerPage, items, search}) {
+    // We start with an empty list of items.
+    const [currentItems, setCurrentItems] = useState(null);
+    const [pageCount, setPageCount] = useState(0);
+    // Here we use item offsets; we could also use page offsets
+    // following the API or data you're working with.
+    const [itemOffset, setItemOffset] = useState(0);
+    let FILTER = items.filter(item => {
+        return item.name.first.normalize('NFC').toLowerCase().includes(search.toLowerCase()) ||
+        item.location.country.toLowerCase().includes(search.toLowerCase())
+    })
+    // console.log('woi', FILTER, currentItems, itemsPerPage, pageCount, itemOffset);
+
+    useEffect(() => {
+        // Fetch items from another resources.
+        const endOffset = itemOffset + itemsPerPage;
+        // console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+        setCurrentItems(FILTER.slice(itemOffset, endOffset));
+        setPageCount(Math.ceil(FILTER.length / itemsPerPage));
+        if(itemOffset > itemsPerPage * pageCount) setItemOffset(0)
+    }, [itemOffset, itemsPerPage, search]);
+
+    // Invoke when user click to request another page.
+    const handlePageClick = (event) => {
+        const newOffset = event.selected * itemsPerPage % FILTER.length;
+        // console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
+        setItemOffset(newOffset);
+    };
+
+   return (
+    <>
+        <Items currentItems={currentItems} data={items} />
+        <ReactPaginate
+            nextLabel=">"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={3}
+            marginPagesDisplayed={2}
+            pageCount={pageCount}
+            previousLabel="<"
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            containerClassName="pagination"
+            activeClassName="active"
+            renderOnZeroPageCount={null}
+        />
+    </>
+   )
+}
+
 export default function List() {
     const { data, loading } = useSelector((state) => state.users)
     const dispatch = useDispatch()
     const [search, setSearch] = useState('')
+    
     
     useEffect(() => {
         console.log('hey');
@@ -16,38 +88,16 @@ export default function List() {
     }, [])
 
     const handleSearch = (evt) => {
-        // console.log(evt.target.name, evt.target.value);
         setSearch(evt.target.value)
     }
     const clearSearch = () => {
         setSearch('')
     }
     const refresh = () => {
+        setSearch('')
         dispatch(getUserAPI())
     }
-
-    const _renderContent = () => {
-        let display
-
-        console.log('b4', data);
-
-        let FILTER = search === '' ? data : data.filter(item => {
-            // console.log(item.name.first, item.name.first.toLowerCase() === search.toLowerCase());
-            return item.name.first.normalize('NFC').toLowerCase().includes(search.toLowerCase()) ||
-            item.location.country.toLowerCase().includes(search.toLowerCase())
-        })
-
-        switch (FILTER.length) {
-            case 0:
-                return display = <div className='container text-center'>No such item, please check your search spelling and try again</div>        
-            default:
-                return display = FILTER.map((data,index) => (
-                    <UserCards key={index} data={data} />
-                ))
-        }
-    }
     
-    // console.log('sini', search);
     switch (loading) {
         case 'idle':
             return (
@@ -79,7 +129,8 @@ export default function List() {
                         <Col sm={3} className='font-small text-right'>Email</Col>
                     </Row>
 
-                    {_renderContent()}
+                    {/* {_renderContent()} */}
+                    <Pagination items={data} itemsPerPage={7} search={search} />
                 </div>
             )
         default:
