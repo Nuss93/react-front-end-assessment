@@ -14,12 +14,12 @@ export default function Header() {
             <small>Last online : 2 days ago</small>
           </div>
           <div>
-            <Button color='light' style={{marginRight:'15px'}}>
-              <img src={SEND} height={'14px'} />
+            <Button color='light' className='justify-content-center align-items-center d-inline-flex' style={{marginRight:'15px'}}>
+              <img src={SEND} height={'12px'} />
               <span style={{color: '#35BAD8', marginLeft:'5px'}}>Send Message</span>
             </Button>
-            <Button color='light' outline>
-              <img src={ADD} height={'14px'} />
+            <Button color='light' className='justify-content-center align-items-center d-inline-flex' outline>
+              <img src={ADD} height={'12px'} />
               <span style={{color: '#fff', marginLeft:'5px'}}>Add Friend</span>
             </Button>
           </div>

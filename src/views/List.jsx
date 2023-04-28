@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getUserAPI } from '../features/userSlice'
 import UserCards from '../components/UserCards'
 import { Button, Col, Input, Row } from 'reactstrap'
+import REFRESH from '../assets/img/refresh.png'
 
 export default function List() {
     const { data, loading } = useSelector((state) => state.users)
@@ -21,6 +22,9 @@ export default function List() {
     const clearSearch = () => {
         setSearch('')
     }
+    const refresh = () => {
+        dispatch(getUserAPI())
+    }
 
     const _renderContent = () => {
         let display
@@ -32,8 +36,6 @@ export default function List() {
             return item.name.first.normalize('NFC').toLowerCase().includes(search.toLowerCase()) ||
             item.location.country.toLowerCase().includes(search.toLowerCase())
         })
-        // let FILTER = data
-        console.log('filter', FILTER, search);
 
         switch (FILTER.length) {
             case 0:
@@ -64,6 +66,10 @@ export default function List() {
                             className='input-text'
                         />
                         <Button size='sm' color='danger' className='smaller-btn' onClick={clearSearch}>Clear Search</Button>
+                        <Button size='sm' color='primary' className='smaller-btn d-flex justify-content-center align-items-center' onClick={refresh}>
+                            <img src={REFRESH} height={'12px'} />
+                            <span style={{color: '#fff', marginLeft:'5px'}}>Refresh</span>
+                        </Button>
                     </div>
                     <Row className='m-0 mb-2 px-2 justify-content-between' style={{color:'#BCBCBC'}}>
                         <Col sm={2} className='font-small'>Date</Col>
