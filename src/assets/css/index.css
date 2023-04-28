@@ -11,15 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-.header {
+.header-container {
   background-color: #35BAD8;
-  padding: 1rem 5rem;
+  width: 100%;
+  margin: 0 auto;
+}
+.header {
+  padding: 1rem;
+  width: 80%;
+  margin: 0 auto;
   position: relative;
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
   color: #fff;
+}
+.navbar {
+  height: 90px;
 }
 /* .header > div {
   background-color: red;
@@ -30,6 +38,7 @@ code {
 } */
 .container {
   margin-top: 3rem;
+  width: 80%;
 }
 .font-small {
   font-size: 0.6rem;
