@@ -6,7 +6,7 @@ import COG from "../assets/img/settings.png";
 
 export default function Navbar() {
   return (
-    <div className='navbar d-flex justify-content-between p-3 px-5'>
+    <div className='navbar d-flex justify-content-between'>
         <img src={LOGO} height='44px' />
         <div>
           <img src={BELL} width='30px' />

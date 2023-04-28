@@ -1,19 +1,48 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserAPI } from '../features/userSlice'
 import UserCards from '../components/UserCards'
-import { Col, Row } from 'reactstrap'
+import { Col, Input, Row } from 'reactstrap'
 
 export default function List() {
     const { data, loading } = useSelector((state) => state.users)
     const dispatch = useDispatch()
+    const [search, setSearch] = useState('')
     
     useEffect(() => {
         console.log('hey');
         dispatch(getUserAPI())
     }, [])
+
+    const handleSearch = (evt) => {
+        // console.log(evt.target.name, evt.target.value);
+        setSearch(evt.target.value)
+    }
+
+    const _renderContent = () => {
+        let display
+
+        console.log('b4', data);
+
+        let FILTER = search === '' ? data : data.filter(item => {
+            // console.log(item.name.first, item.name.first.toLowerCase() === search.toLowerCase());
+            return item.name.first.toLowerCase().includes(search.toLowerCase()) ||
+            item.location.country.toLowerCase().includes(search.toLowerCase())
+        })
+        // let FILTER = data
+        console.log('filter', FILTER, search);
+
+        switch (FILTER.length) {
+            case 0:
+                return display = <div className='container text-center'>No such item, please check your search spelling and try again</div>        
+            default:
+                return display = FILTER.map((data,index) => (
+                    <UserCards key={index} data={data} />
+                ))
+        }
+    }
     
-    console.log('sini', data, loading);
+    // console.log('sini', search);
     switch (loading) {
         case 'idle':
             return (
@@ -22,17 +51,24 @@ export default function List() {
         case 'ready':
             return (
                 <div className='container'>
-                    <Row className='m-0 justify-content-between'>
+                    <div className='mb-3'>
+                        <Input
+                            onChange={handleSearch}
+                            name='search'
+                            type='text'
+                            placeholder='Search by name or country'
+                            className='input-text'
+                        />
+                    </div>
+                    <Row className='m-0 mb-2 px-2 justify-content-between'>
                         <Col sm={2} className='font-small'>Date</Col>
                         <Col sm={4} className='font-small'>Name</Col>
                         <Col sm={1} className='font-small'>Gender</Col>
                         <Col sm={2} className='font-small'>Country</Col>
                         <Col sm={3} className='font-small text-right'>Email</Col>
                     </Row>
-                    <UserCards data={data[0]} />
-                    {data.map((data,index) => (
-                        <UserCards key={index} data={data} />
-                    ))}
+
+                    {_renderContent()}
                 </div>
             )
         default:
