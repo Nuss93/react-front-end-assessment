@@ -3,6 +3,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Styling was using [Reactstrap](https://reactstrap.github.io/) components with slight customisation.
 
 ![image](src/assets/img/page.jpeg)
+<br>
 
 <u>The app has the following features:</u>
 - Display a list of users fetched from the [Random User API](https://randomuser.me/api/?results=20).
@@ -12,7 +13,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Clear search feature that resets the search bar.
 - Pagination to limit up to 7 users per page.
 
-<br>
 <br>
 
 ## Running the script
