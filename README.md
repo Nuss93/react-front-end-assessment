@@ -11,7 +11,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Search feature that filters the results by `name` or `country`.
 - Clear search feature that resets the search bar.
 - Pagination to limit up to 7 users per page.
-
+\
 ## Running the script
 ### 1. `npm install`
 Installs all the dependencies required for running the app.
