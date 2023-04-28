@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserAPI } from '../features/userSlice'
 import UserCards from '../components/UserCards'
-import { Col, Input, Row } from 'reactstrap'
+import { Button, Col, Input, Row } from 'reactstrap'
 
 export default function List() {
     const { data, loading } = useSelector((state) => state.users)
@@ -18,6 +18,9 @@ export default function List() {
         // console.log(evt.target.name, evt.target.value);
         setSearch(evt.target.value)
     }
+    const clearSearch = () => {
+        setSearch('')
+    }
 
     const _renderContent = () => {
         let display
@@ -26,7 +29,7 @@ export default function List() {
 
         let FILTER = search === '' ? data : data.filter(item => {
             // console.log(item.name.first, item.name.first.toLowerCase() === search.toLowerCase());
-            return item.name.first.toLowerCase().includes(search.toLowerCase()) ||
+            return item.name.first.normalize('NFC').toLowerCase().includes(search.toLowerCase()) ||
             item.location.country.toLowerCase().includes(search.toLowerCase())
         })
         // let FILTER = data
@@ -51,16 +54,18 @@ export default function List() {
         case 'ready':
             return (
                 <div className='container'>
-                    <div className='mb-3'>
+                    <div className='mb-3 d-flex align-items-center justify-content-end'>
                         <Input
                             onChange={handleSearch}
                             name='search'
                             type='text'
                             placeholder='Search by name or country'
+                            value={search}
                             className='input-text'
                         />
+                        <Button size='sm' color='danger' className='smaller-btn' onClick={clearSearch}>Clear Search</Button>
                     </div>
-                    <Row className='m-0 mb-2 px-2 justify-content-between'>
+                    <Row className='m-0 mb-2 px-2 justify-content-between' style={{color:'#BCBCBC'}}>
                         <Col sm={2} className='font-small'>Date</Col>
                         <Col sm={4} className='font-small'>Name</Col>
                         <Col sm={1} className='font-small'>Gender</Col>
