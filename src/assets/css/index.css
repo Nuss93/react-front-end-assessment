@@ -19,6 +19,7 @@ code {
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
+  color: #fff;
 }
 /* .header > div {
   background-color: red;
@@ -31,5 +32,8 @@ code {
   margin-top: 3rem;
 }
 .font-small {
-  font-size: 0.8rem;
+  font-size: 0.6rem;
+}
+.text-right {
+  text-align: right!important;
 }

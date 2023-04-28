@@ -22,12 +22,12 @@ export default function List() {
         case 'ready':
             return (
                 <div className='container'>
-                    <Row className='m-0'>
+                    <Row className='m-0 justify-content-between'>
                         <Col sm={2} className='font-small'>Date</Col>
-                        <Col sm={2} className='font-small'>Name</Col>
-                        <Col sm={2} className='font-small'>Gender</Col>
+                        <Col sm={4} className='font-small'>Name</Col>
+                        <Col sm={1} className='font-small'>Gender</Col>
                         <Col sm={2} className='font-small'>Country</Col>
-                        <Col sm={3} className='font-small'>Email</Col>
+                        <Col sm={3} className='font-small text-right'>Email</Col>
                     </Row>
                     <UserCards data={data[0]} />
                     {data.map((data,index) => (
