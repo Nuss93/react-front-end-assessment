@@ -12,6 +12,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+p {
+  margin-bottom: 0.6rem;
+}
 .header-container {
   background-color: #35BAD8;
   width: 100%;
