@@ -4,6 +4,7 @@ import AVATAR from '../assets/img/Avatar.png'
 import SEND from '../assets/img/send.png'
 import ADD from '../assets/img/add.png'
 
+// Component for Blue header that displays user avatar, name, online status and buttons
 export default function Header() {
   return (
     <div className='header-container'>

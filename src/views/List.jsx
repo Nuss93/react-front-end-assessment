@@ -22,7 +22,7 @@ function Items ({ currentItems }) {
 }
 
 // Function component that accepts number of items per page, the data object and search string
-// 
+// Will slice up the array to paginate according to number of items per page set
 function Pagination ({itemsPerPage, items, search}) {
     // We start with an empty list of items.
     const [currentItems, setCurrentItems] = useState(null);
@@ -31,14 +31,13 @@ function Pagination ({itemsPerPage, items, search}) {
     // following the API or data you're working with.
     const [itemOffset, setItemOffset] = useState(0);
     let FILTER = items.filter(item => {
-        return item.name.first.normalize('NFC').toLowerCase().includes(search.toLowerCase()) ||
+        return item.name.first.toLowerCase().includes(search.toLowerCase()) ||
         item.location.country.toLowerCase().includes(search.toLowerCase())
     })
 
     useEffect(() => {
         // Fetch items from another resources.
         const endOffset = itemOffset + itemsPerPage;
-        // console.log(`Loading items from ${itemOffset} to ${endOffset}`);
         setCurrentItems(FILTER.slice(itemOffset, endOffset));
         setPageCount(Math.ceil(FILTER.length / itemsPerPage));
         if(itemOffset > itemsPerPage * pageCount) setItemOffset(0)
@@ -47,7 +46,6 @@ function Pagination ({itemsPerPage, items, search}) {
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
         const newOffset = event.selected * itemsPerPage % FILTER.length;
-        // console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
         setItemOffset(newOffset);
     };
 
@@ -83,27 +81,30 @@ export default function List() {
     const dispatch = useDispatch()
     const [search, setSearch] = useState('')
     
-    
     useEffect(() => {
         console.log('hey');
         dispatch(getUserAPI())
     }, [])
 
+    // Handle search function to update state
     const handleSearch = (evt) => {
         setSearch(evt.target.value)
     }
+    // Clear search function that resets the search bar
     const clearSearch = () => {
         setSearch('')
     }
+    // Refresh function that calls redux dispatch
     const refresh = () => {
         setSearch('')
         dispatch(getUserAPI())
     }
     
+    // Switch method conditional rendering to ensure page doesnt crash while API is still loading
     switch (loading) {
         case 'idle':
             return (
-                <div className='container'>Loading</div>
+                <div className='container text-center'>Loading</div>
             )
         case 'ready':
             return (
@@ -123,6 +124,7 @@ export default function List() {
                             <span style={{color: '#fff', marginLeft:'5px'}}>Refresh</span>
                         </Button>
                     </div>
+                    
                     <Row className='m-0 mb-2 px-2 justify-content-between' style={{color:'#BCBCBC'}}>
                         <Col sm={2} className='font-small'>Date</Col>
                         <Col sm={4} className='font-small'>Name</Col>
@@ -131,7 +133,6 @@ export default function List() {
                         <Col sm={3} className='font-small text-right'>Email</Col>
                     </Row>
 
-                    {/* {_renderContent()} */}
                     <Pagination items={data} itemsPerPage={7} search={search} />
                 </div>
             )
