@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+// Using redux thunk to asynchronously fetch API
 export const getUserAPI = createAsyncThunk('users/getUserAPI', async () => {
     return fetch('https://randomuser.me/api/?page=page&results=20').then(res => {
         return res.json()

@@ -16,6 +16,8 @@ function UserCards(props) {
   )
 }
 
-UserCards.propTypes = {}
+UserCards.propTypes = {
+    data: PropTypes.object.isRequired
+}
 
 export default UserCards

@@ -6,10 +6,11 @@ import UserCards from '../components/UserCards'
 import { Button, Col, Input, Row } from 'reactstrap'
 import REFRESH from '../assets/img/refresh.png'
 
+// Function component to map out the items after being sliced into pages
 function Items ({ currentItems }) {
     if(currentItems === null) return;
-
     let display
+
     switch (currentItems.length) {
         case 0:
             return display = <div className='container text-center'>No such item, please check your search spelling and try again</div>        
@@ -20,6 +21,8 @@ function Items ({ currentItems }) {
     }
 }
 
+// Function component that accepts number of items per page, the data object and search string
+// 
 function Pagination ({itemsPerPage, items, search}) {
     // We start with an empty list of items.
     const [currentItems, setCurrentItems] = useState(null);
@@ -31,7 +34,6 @@ function Pagination ({itemsPerPage, items, search}) {
         return item.name.first.normalize('NFC').toLowerCase().includes(search.toLowerCase()) ||
         item.location.country.toLowerCase().includes(search.toLowerCase())
     })
-    // console.log('woi', FILTER, currentItems, itemsPerPage, pageCount, itemOffset);
 
     useEffect(() => {
         // Fetch items from another resources.
@@ -68,7 +70,7 @@ function Pagination ({itemsPerPage, items, search}) {
             breakLabel="..."
             breakClassName="page-item"
             breakLinkClassName="page-link"
-            containerClassName="pagination"
+            containerClassName="pagination d-flex align-items-center justify-content-center mt-3"
             activeClassName="active"
             renderOnZeroPageCount={null}
         />
